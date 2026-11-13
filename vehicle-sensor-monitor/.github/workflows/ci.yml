@@ -1,0 +1,34 @@
+name: C++ build and tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: g++
+            tsan: 'OFF'
+          - compiler: clang++
+            tsan: 'OFF'
+          - compiler: clang++
+            tsan: 'ON'
+    env:
+      CXX: ${{ matrix.compiler }}
+      TSAN_OPTIONS: halt_on_error=1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install compilers
+        run: sudo apt-get update && sudo apt-get install -y g++ clang cmake python3
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_TSAN=${{ matrix.tsan }} -DREQUIRE_IPC_TESTS=ON
+      - name: Build
+        run: cmake --build build -j 2
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+      - name: Run scheduled fault demonstration
+        run: ./build/sensor_monitor

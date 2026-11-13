@@ -9,7 +9,8 @@ A dependency-free C++17 application that simulates vehicle telemetry, detects mi
 Requires CMake 3.16+, Clang on macOS or GCC/Clang on Linux, and platform threads. Python 3 enables process integration tests; the application and C++ tests have no third-party dependencies.
 
 ```sh
-cd vehicle-sensor-monitor
+git clone https://github.com/jeffgao26/Vehicle-Sensor-Monitor.git
+cd Vehicle-Sensor-Monitor
 cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 cmake --build build -j
 ./build/sensor_monitor
@@ -150,7 +151,7 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ```
 
-The included `.github/workflows/ci.yml` builds Linux GCC, Clang, and Clang+ThreadSanitizer configurations, runs tests with IPC required, and runs the scheduled demo. Publish **this project directory as the repository root**, so GitHub can discover its `.github/workflows` directory. The workflow follows the [GitHub Actions workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) and [checkout action usage](https://github.com/actions/checkout).
+The included `.github/workflows/ci.yml` builds Linux GCC, Clang, and Clang+ThreadSanitizer configurations, runs tests with IPC required, and runs the scheduled demo. The workflow is located at the repository root so GitHub can discover it. The workflow follows the [GitHub Actions workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) and [checkout action usage](https://github.com/actions/checkout).
 
 Local validation on macOS/AppleClang 17: builds, watchdog/protocol/signal tests, and the 15-second local demo passed; sanitizer tests passed without reported races. Socket binding was denied by the execution sandbox, so socket-delivery and process-kill/restart tests were skipped, not verified. Linux CI is configured but has not been run on GitHub.
 

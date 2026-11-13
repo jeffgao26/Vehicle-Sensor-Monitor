@@ -1,5 +1,15 @@
-build/
+# Build products and editor/OS files
+build*/
 .DS_Store
 *.o
 *.out
 *.dSYM/
+
+# Local workspace instructions, tooling, and usage records
+/AGENTS.md
+/skills/codex-spend-tracker/
+/.usage-tracker/
+/.workspace-local/
+
+# Old build caches retained locally after moving the project to the root
+/vehicle-sensor-monitor/
